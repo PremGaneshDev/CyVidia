@@ -61,7 +61,7 @@ model.add(Dense(len(area_encoder.classes_), activation='softmax'))
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model on training data
-model.fit(X_train, y_train, epochs=50, batch_size=32)
+model.fit(X_train, y_train, epochs=150, batch_size=32)
 
 
 # save the trained model in h5 file 

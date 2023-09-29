@@ -31,9 +31,8 @@ def clean_text(text):
 train_df['Cleaned_Description'] = train_df['Requirement Description'].apply(clean_text)
 validation_df['Cleaned_Description'] = validation_df['Requirement Description'].apply(clean_text)
 
-# Use the same column names for target labels
+# Target Labels for Training
 y_train = train_df['Requirement Area']
-y_val = validation_df['Requirement Description']
 
 # Tokenize and pad sequences for training data
 max_words = 1000
@@ -41,10 +40,6 @@ tokenizer = Tokenizer(num_words=max_words)
 tokenizer.fit_on_texts(train_df['Cleaned_Description'])
 X_train = tokenizer.texts_to_sequences(train_df['Cleaned_Description'])
 X_train = pad_sequences(X_train, maxlen=100)
-
-# Tokenize and pad sequences for validation data
-X_val = tokenizer.texts_to_sequences(validation_df['Cleaned_Description'])
-X_val = pad_sequences(X_val, maxlen=100)
 
 # Label encode 'Requirement Area' for training data
 area_encoder = LabelEncoder()
@@ -63,29 +58,39 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=
 # Train the model on training data
 model.fit(X_train, y_train, epochs=150, batch_size=32)
 
+# Tokenize and pad sequences for validation data
+X_val = tokenizer.texts_to_sequences(validation_df['Cleaned_Description'])
+X_val = pad_sequences(X_val, maxlen=100)
+
 # Predict on validation data
 y_pred = model.predict(X_val)
 y_pred_classes = np.argmax(y_pred, axis=1)
 
-# Convert the predicted labels back to original labels
-predicted_areas = area_encoder.inverse_transform(y_pred_classes)
+# Get prediction scores
+prediction_scores = np.max(y_pred, axis=1)
 
-# Add the predicted labels to the validation DataFrame
-validation_df['Predicted_Area'] = predicted_areas
+# Create a threshold for labeling (e.g., 0.85)
+labeling_threshold = 0.85
 
-# Add the prediction level like score for each prediction to the validation DataFrame 
-validation_df['Prediction_Level'] = np.max(y_pred, axis=1)
+# Initialize lists to store predicted labels and suggested areas
+predicted_labels = []
+suggested_areas = []
 
-# if prediction level is less than 0.8, set the predicted area to 'Other'  if prediction level is less than 0.8, add the predicted area as new column as suggested area
+# Iterate through predictions and apply labeling/suggestion logic
+for pred, score in zip(y_pred_classes, prediction_scores):
+    if score >= labeling_threshold:
+        predicted_labels.append(area_encoder.inverse_transform([pred])[0])
+        suggested_areas.append('')
+    else:
+        predicted_labels.append('Other')  # Label as 'Other' for scores < 85
+        suggested_areas.append(area_encoder.inverse_transform([pred])[0])
 
-validation_df.loc[validation_df['Prediction_Level'] < 0.8, 'Suggested_Area'] = validation_df['Predicted_Area']
-validation_df.loc[validation_df['Prediction_Level'] < 0.8, 'Predicted_Area'] = 'Other'
-
-
-
+# Add the predicted labels, prediction scores, and suggested areas to the validation DataFrame
+validation_df['Predicted_Area'] = predicted_labels
+validation_df['Prediction_Score'] = prediction_scores
+validation_df['Suggested_Area'] = suggested_areas
 
 # Save the validation results DataFrame to an Excel file
-validation_results_file_path = 'Output/SingleFile.xlsx'
+validation_results_file_path = 'Output/Trail_1_v2__With_Score.xlsx'
 validation_df.to_excel(validation_results_file_path, index=False)
-
 print("Validation results with predictions saved to", validation_results_file_path)
