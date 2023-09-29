@@ -65,51 +65,5 @@ model.fit(X_train, y_train, epochs=150, batch_size=32)
 
 
 # save the trained model in h5 file 
-# model.save('TrainedLabelingModel.h5')
-
+model.save('TrainedLabelingModel.h5')
 model.save('TrainedLabelingModel.keras')
-
-
-
-
-
-
-
-
-
-
-
-# print(f"Validation results with predictions saved to {validation_results_file_path}")
-# print(f"Number of predictions: {validation_df.shape[0]}")
-# print(f"Number of unique predictions: {validation_df['Predicted_Area'].nunique()}")
-# print(f"Unique predictions: {validation_df['Predicted_Area'].unique()}")
-# print(f"Number of unique requirement areas: {validation_df['Requirement Area'].nunique()}")
-# print(f"Unique requirement areas: {validation_df['Requirement Area'].unique()}")
-# print(f"Number of correct predictions: {validation_df['Requirement Area'].eq(validation_df['Predicted_Area']).sum()}")
-# print(f"Number of incorrect predictions: {validation_df['Requirement Area'].ne(validation_df['Predicted_Area']).sum()}")
-# print(f"Accuracy: {validation_df['Requirement Area'].eq(validation_df['Predicted_Area']).mean() * 100}%")
-
-
-
-# merged_df = pd.merge(train_df, validation_df, on="Requirement Description", how="inner")
-
-# # Check if Predicted_Area matches Requirement Area and create a "Correct" column
-# merged_df['Correct'] = merged_df.apply(lambda row: 'Valid' if row['Predicted_Area'] == row['Requirement Area'] else 'Invalid', axis=1)
-
-
-# # Print the number of correct and incorrect predictions
-# print(f"Number of correct predictions: {merged_df['Correct'].eq('Valid').sum()}")
-# print(f"Number of incorrect predictions: {merged_df['Correct'].eq('Invalid').sum()}")
-# print(f"Total number of predictions: {merged_df.shape[0]}")
-
-# # Print the accuracy of the model on the validation data set
-# print(model.accuracy(X_val, y_val))
-
-
-# print(f"Accuracy: {merged_df['Correct'].eq('Valid').mean() * 100}%")
-
-# # Create a new Excel file with the "Correct" column
-# output_excel = "Validation_Results_With_Correctness.xlsx"  
-# merged_df.to_excel(output_excel, index=False, engine='openpyxl')
-
-# print(f"Validation results with correctness saved to {output_excel}")
