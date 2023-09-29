@@ -91,6 +91,6 @@ validation_df['Prediction_Score'] = prediction_scores
 validation_df['Suggested_Area'] = suggested_areas
 
 # Save the validation results DataFrame to an Excel file
-validation_results_file_path = 'Output/Trail_1_v3__With_Score.xlsx'
+validation_results_file_path = 'Output/ArjunTest.xlsx'
 validation_df.to_excel(validation_results_file_path, index=False)
 print("Validation results with predictions saved to", validation_results_file_path)
