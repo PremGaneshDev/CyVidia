@@ -11,10 +11,8 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
 
 # Load your Excel files for training and validation
 train_file_path = 'Data/Training DataSets.xlsx'
-validation_file_path = 'Data/Validation Dataset.xlsx'
 
 train_df = pd.read_excel(train_file_path)
-validation_df = pd.read_excel(validation_file_path)
 
 # Define a function for text cleaning
 def clean_text(text):
@@ -27,13 +25,11 @@ def clean_text(text):
     clean_text = ' '.join(words)
     return clean_text
 
-# Apply text cleaning to 'Requirement Description' column for training and validation data
+# Apply text cleaning to 'Requirement Description' column for training data
 train_df['Cleaned_Description'] = train_df['Requirement Description'].apply(clean_text)
-validation_df['Cleaned_Description'] = validation_df['Requirement Description'].apply(clean_text)
 
 # Use the same column names for target labels
 y_train = train_df['Requirement Area']
-y_val = validation_df['Requirement Description']
 
 # Tokenize and pad sequences for training data
 max_words = 1000
@@ -41,10 +37,6 @@ tokenizer = Tokenizer(num_words=max_words)
 tokenizer.fit_on_texts(train_df['Cleaned_Description'])
 X_train = tokenizer.texts_to_sequences(train_df['Cleaned_Description'])
 X_train = pad_sequences(X_train, maxlen=100)
-
-# Tokenize and pad sequences for validation data
-X_val = tokenizer.texts_to_sequences(validation_df['Cleaned_Description'])
-X_val = pad_sequences(X_val, maxlen=100)
 
 # Label encode 'Requirement Area' for training data
 area_encoder = LabelEncoder()
@@ -61,10 +53,10 @@ model.add(Dense(len(area_encoder.classes_), activation='softmax'))
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model on training data
-model.fit(X_train, y_train, epochs=10, batch_size=32)
+model.fit(X_train, y_train, epochs=150, batch_size=32)
 
-
-# save the trained model in h5 file 
+# Save the trained model to an HDF5 file
 model.save('TrainedLabelingModel.h5')
 
+# Save the model as a Keras .keras file (optional)
 model.save('TrainedLabelingModel.keras')
