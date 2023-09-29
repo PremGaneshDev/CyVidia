@@ -56,7 +56,7 @@ model.add(Dense(len(area_encoder.classes_), activation='softmax'))
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model on training data
-model.fit(X_train, y_train, epochs=150, batch_size=32)
+model.fit(X_train, y_train, epochs=150, batch_size=32) # batch_size=32 what is this? batch_size=32 is the number of samples per gradient update (i.e., the number of samples that will be propagated through the network at a time). The higher the batch size, the more memory space you'll need. The lower the batch size, the longer it will take to train the model. The batch size is a hyperparameter that you can tune. The default value is 32.
 
 # Tokenize and pad sequences for validation data
 X_val = tokenizer.texts_to_sequences(validation_df['Cleaned_Description'])
