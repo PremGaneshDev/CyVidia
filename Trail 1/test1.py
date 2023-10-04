@@ -17,7 +17,7 @@ stop = stopwords.words('english')
 
 def main():
     # Load the Excel file into a DataFrame
-    excel_file = "POC Based Requirements.xlsx"
+    excel_file = "/Users/PremGanesh/Developer/Cyvidia/CyVidia/Input_Data/Training DataSets.xlsx"
     df = pd.read_excel(excel_file)
 
     # Data Preprocessing
@@ -30,7 +30,7 @@ def main():
     df['Requirement Description'] = df['Requirement Description'].str.strip()
     df['Requirement Description'] = df['Requirement Description'].apply(nltk.word_tokenize)
 
-    # Topic Modeling (LDA)
+    # Topic Modeling (LDA)  Latent Dirichlet Allocation 
     text = df['Requirement Description'].tolist()
     dictionary = corpora.Dictionary(text)
     corpus = [dictionary.doc2bow(text) for text in text]
