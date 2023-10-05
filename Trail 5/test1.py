@@ -9,7 +9,7 @@ model = GPT2LMHeadModel.from_pretrained(model_name)
 # Define a function to generate questions with keywords and improved grammar
 def generate_question(context, keyword):
     # Create the input text with context and keyword
-    input_text = f" dont repeat the statement  Generate the question and frame the question :-{context}. {keyword} "
+    input_text = f" create a question for this context like easy to understand  :-{context}. {keyword} "
     
     # Tokenize the input text
     input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
