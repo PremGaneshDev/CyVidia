@@ -67,7 +67,7 @@ model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=
 model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_val, y_val))
 
 # Save the model to a file for future use 
-model.save('model.h5')
+model.save('model.h5') 
 
 
 

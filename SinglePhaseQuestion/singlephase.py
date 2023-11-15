@@ -1,8 +1,12 @@
 import pandas as pd
 import openai
 
-# Replace 'YOUR_API_KEY' with your actual OpenAI API key
-api_key = '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'
+# read the .evn file to get the api key
+from dotenv import load_dotenv
+load_dotenv()
+import os
+# Get the OpenAI API key from the environment variables
+api_key = os.getenv("openaiKey")
 
 # Read the data from the Excel file
 data = pd.read_excel('/Users/PremGanesh/Developer/AI/CyVidia/Input_Data/RBI_training data.xlsx', sheet_name='Dashboard sheet')

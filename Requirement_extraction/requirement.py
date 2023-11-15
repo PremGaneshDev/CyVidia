@@ -60,3 +60,6 @@ if __name__ == "__main__":
     df['Sentence'] = df['Sentence'].str.replace('\t','')
     # Export to an Excel file
     df.to_excel('claro_requirement_data.xlsx', sheet_name='Sheet1', index=False)
+
+     
+
