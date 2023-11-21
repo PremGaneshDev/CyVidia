@@ -6,6 +6,8 @@ python -m venv .myenvlocal
 source .myenvlocal/bin/activate   # On macOS/Linux
 source activate .myenvlocal
 
+
+
 # or
 .\.myenvlocal\Scripts\activate   # On Windows
 
