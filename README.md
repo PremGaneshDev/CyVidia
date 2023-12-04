@@ -1,18 +1,18 @@
 # CyVidia
 # Create a new virtual environment
-python -m venv .myenvlocal
+python -m venv .venv
 
 # Activate the virtual environment
-source .myenvlocal/bin/activate   # On macOS/Linux
-source activate .myenvlocal
+source .venv/bin/activate   # On macOS/Linux
+source activate .venv
 
 
 
 # or
-.\.myenvlocal\Scripts\activate   # On Windows
+.\.venv\Scripts\activate   # On Windows
 
 # Install the requirments 
-python install requirments.txt
+pip install -r requirements.txt 
 
 
 # Download and install the language model
